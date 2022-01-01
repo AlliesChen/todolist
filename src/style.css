@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Open Sans';
+    src: url('./Open_Sans/static/OpenSans/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Fredoka One';
+    src: url('./Baloo_2\,Fredoka_One/Fredoka_One/FredokaOne-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Baloo 2';
+    src: url('./Baloo_2\,Fredoka_One/Baloo_2/static/Baloo2-Regular.ttf');
+}
+
+.flex--col {
+    display: flex;
+    flex-flow: column;
+}
+
+.aic {
+    align-items: center;
+}
+
+.jc--btw {
+    justify-content: space-between;
+}
+
+.container {
+    width: 768px;
+    height: 100vh;
+    border: 1px solid #000;
+}
+
+.header {
+    font-size: 36px;
+    margin: 20px 0;
+    font-family: 'Fredoka One';
+}
+
+.footer {
+    font-size: 18px;
+    margin: 10px 0;
+    font-family: 'Baloo 2';
+}
