@@ -5,10 +5,17 @@
         <title>TODO List</title>
         <script src="./index.bundle.js" defer></script>
     </head>
-    <body>
-        <div id= 'container'>
-            <header>TODO List</header>
-            <footer>For The Odin Project</footer>
+    <body class= "flex--col aic">
+        <div id= "container" class= "container flex--col aic jc--btw">
+            <header class= "header">TODO List</header>
+            <div class= "filter">
+                <label for= "filter-select">Project:</label>
+                <select id= "filter-select" name="projects">
+                    <option value="All">All</option>
+                    <option value="myProject">myProject</option>
+                </select>
+            </div>
+            <footer class= "footer">For The Odin Project</footer>
         </div>
     </body>
 </html>
