@@ -9,50 +9,57 @@ const createElement = (element, ...classNames) => {
         newObj.addClass(classNames);
     }
     
-    function addClass(...attrs) {
-        attrs.forEach(attr => {
-            this.classList.add(attr);
-        });
+    function addClass(attrs) {
+        if (attrs.length) {
+            this.classList.add(attrs.pop());
+            this.addClass(attrs);
+        }
     };
 
     return newObj
 };
 
-const webElements = {
+const taskElements = {
     get task() { 
         return createElement('div', 'task');
     },
-    get title() {
-        return createElement('p', 'title');
-    },
-    get description() {
-        return createElement('p', 'content');
+    get tagFrame(){
+        return createElement('section', 'tagFrame')
     },
     get priority() {
-        return createElement('div', 'tags');
+        return createElement('p', 'tags');
     },
     get dueDate() {
-        return createElement('div', 'tags');
+        return createElement('p', 'tags');
     },
-    get projectName() {
-        return createElement('div', 'tags');
+    get project() {
+        return createElement('p', 'tags');
+    },
+    get infoFrame() {
+        return createElement('section', 'infoFrame');
+    },
+    get title() {
+        return createElement('p', 'fs--22', 'm--0');
+    },
+    get description() {
+        return createElement('p', 'fs--18', 'm--0');
     },
 };
 
-function project(title, description, priority, dueDate, projectName) {
-    this.title = title;
-    this.description = description;
+function Task(priority, dueDate, project, title, description) {
     this.priority = priority;
     this.dueDate = dueDate;
-    this.projectName = projectName;
+    this.project = project;
+    this.title = title;
+    this.description = description;
 };
 
-const defaultTodo = new project(
-    "TODO 1: What you gonna make today :))",
-    "Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things more clear 😁",
+const defaultTodo = new Task(
     "Medium",
     format(new Date(), 'MMM dd, yyyy'),
     "myProject",
+    "What you gonna make today :))",
+    "Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things more clear 😁",
 );
 
 const storage = {
@@ -63,66 +70,84 @@ const storage = {
     set check(item) {
         const local = Object.assign(this.usage, item);
         localStorage.setItem('TODOList', JSON.stringify(local));
-    }
+    },
 };
 
-const initializer = () => {
-    if (!storage.check.__init__) {
-        storage.check = {
-            __default__: defaultTodo,
-            __init__: true
-        };
-        initializer();
-    } else {
-        DataReader();
-    }
-};
+const insertTask = (task) => {
+    const container = document.getElementById('container');
+    const footer = document.getElementById('footer');
+    container.insertBefore(task, footer);
+}
 
-const Filter = (() => {
+const taskCreator = (tasks) => {
+    if ((typeof tasks) !== 'object') {
+        return 0;
+    }
+    const container = taskElements.task;
+    // Section for the tags
+    const tagFrame = taskElements.tagFrame;
+    const priority = taskElements.priority;
+    const dueDate = taskElements.dueDate;
+    const project = taskElements.project;
+    // Section for the todos' info
+    const infoFrame = taskElements.infoFrame;
+    const title = taskElements.title;
+    const description = taskElements.description;
+
+    priority.textContent = tasks.priority;
+    dueDate.textContent = tasks.dueDate;
+    project.textContent = tasks.project;
+    title.textContent = tasks.title;
+    description.textContent = tasks.description;
+    // The order of appending does matter
+    tagFrame.appendChild(priority);
+    tagFrame.appendChild(dueDate);
+    tagFrame.appendChild(project);
+    infoFrame.appendChild(title);
+    infoFrame.appendChild(description);
+    container.appendChild(tagFrame);
+    container.appendChild(infoFrame);
+
+    container.addEventListener('click', editTask);
+    insertTask(container);
+
+    function editTask(e) {
+        console.log(e);
+    }
+}
+
+const projectFilter = () => {
     const select = document.querySelector('#filter-select');
-    storage.check = {__filter__: select.value};
+    const records = storage.check;
+
+    for (let item in records) {
+        if (select.value === 'All') {
+            taskCreator(records[item]);
+        } else if (records[item].project === select.value) {
+            taskCreator(records[item]);
+        }
+    }
     
+    // Adjusting the width of the select tag for the filter
     select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
-    select.addEventListener('input', updateValue);
+    select.addEventListener('change', updateValue);
 
     function updateValue(e) {
         select.setAttribute('style', `width: ${e.target.value.length * 7 + 15}px`);
         return 0;
     }
-})();
+};
 
-const DataReader = () => {
-    const bundle = storage.check;
-    const container = document.getElementById('container');
-    const footer = document.querySelector('footer');
-    const filter = bundle["__filter__"];
+const initialize = () => {
+    if (!storage.check.__init__) {
+        storage.check = {
+            __default__: defaultTodo,
+            __init__: true
+        };
+        initialize();
+    } else {
+        projectFilter();
+    }
+};
 
-    for (let key in bundle) {        
-        if (key === "__filter__") continue;
-        if ((bundle[key].projectName !== filter) && (filter !== "All")) continue;
-        if(typeof bundle[key] !== "object") continue;
-        
-        const frame = webElements.task;
-        const title = webElements.title;
-        const description = webElements.description;
-        const priority = webElements.priority;
-        const dueDate = webElements.dueDate;
-        const projectName = webElements.projectName;
-
-        title.textContent = bundle[key].title;
-        description.textContent = bundle[key].description;
-        priority.textContent = bundle[key].priority;
-        dueDate.textContent = bundle[key].dueDate;
-        projectName.textContent = bundle[key].projectName;
-
-        frame.appendChild(priority);
-        frame.appendChild(dueDate);
-        frame.appendChild(projectName);
-        frame.appendChild(title);
-        frame.appendChild(description);
-
-        container.insertBefore(frame, footer);
-    };
-}
-
-initializer();
+initialize();

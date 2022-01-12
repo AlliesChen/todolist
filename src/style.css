@@ -27,6 +27,18 @@ body {
     align-items: center;
 }
 
+.m--0 {
+    margin: 0;
+}
+
+.fs--18 {
+    font-size: 18px;
+}
+
+.fs--22 {
+    font-size: 22px;
+}
+
 .container {
     width: 768px;
     height: 100vh;
@@ -89,30 +101,26 @@ body {
     border-radius: 20px;
 }
 
+.tagFrame {
+    display: flex;
+    gap: 10px;
+    height: 26.5px;
+    margin: 7px 20px;
+}
+
 .tags {
-    display: inline-block;
+    margin: 0;
     padding: 2px 10px;
-    margin: 10px 5px;
     font-family: 'Baloo 2';
     background: radial-gradient(119.52% 50% at 50% 50%, #FFFAE0 0%, #FFEF9C 100%);
     box-shadow: 2px 2px 4px rgba(210, 189, 79, 0.25);
     border-radius: 15px;
 }
 
-.tags:first-of-type {
-    margin-left: 20px;
-}
-
-.title {
+.infoFrame {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 24px;
     font-family: 'Open Sans';
-    font-size: 22px;
-    margin: 0;
-    margin-left: 20px;
-}
-
-.content {
-    font-family: 'Open Sans';
-    font-size: 18px;
-    margin: 10px 10px;
-    margin-left: 20px;
 }
