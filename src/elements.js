@@ -51,4 +51,4 @@ function Task(priority, dueDate, project, title, description) {
     this.description = description;
 };
 
-export {taskElements, Task};
+export {createElement, taskElements, Task};

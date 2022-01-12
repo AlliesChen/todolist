@@ -1,6 +1,6 @@
 import './style.css';
 import {format} from 'date-fns'
-import {taskElements, Task} from  './elements.js';
+import {createElement, taskElements, Task} from  './elements.js';
 import {storage} from './storage.js';
 
 const defaultTodo = new Task(
@@ -74,6 +74,20 @@ const projectFilter = () => {
         return 0;
     }
 };
+
+const addTaskBtn = (() => {
+    const btn = createElement('button', 'btn__addTask');
+    btn.addEventListener('click', addTask);
+    insertTask(btn);
+
+    function addTask(e) {
+        const removeItems = document.querySelectorAll('#container > div');
+        const container = document.getElementById('container');
+        removeItems.forEach((item) => {
+            container.removeChild(item);
+        });
+    }
+})();
 
 const initialize = () => {
     if (!storage.check.__init__) {
