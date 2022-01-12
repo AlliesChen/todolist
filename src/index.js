@@ -1,6 +1,6 @@
 import './style.css';
 import {format} from 'date-fns'
-import {createElement, taskElements, Task} from  './elements.js';
+import {createElement, taskElements, Task, filterSelect} from  './elements.js';
 import {storage} from './storage.js';
 
 const defaultTodo = new Task(
@@ -54,24 +54,14 @@ const taskCreator = (tasks) => {
 }
 
 const projectFilter = () => {
-    const select = document.querySelector('#filter-select');
     const records = storage.check;
-
+    const searchValue = filterSelect.select.value;
     for (let item in records) {
-        if (select.value === 'All') {
+        if (searchValue === 'All') {
             taskCreator(records[item]);
-        } else if (records[item].project === select.value) {
+        } else if (records[item].project === searchValue) {
             taskCreator(records[item]);
         }
-    }
-    
-    // Adjusting the width of the select tag for the filter
-    select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
-    select.addEventListener('change', updateValue);
-
-    function updateValue(e) {
-        select.setAttribute('style', `width: ${e.target.value.length * 7 + 15}px`);
-        return 0;
     }
 };
 
@@ -81,13 +71,21 @@ const addTaskBtn = (() => {
     insertTask(btn);
 
     function addTask(e) {
+        btn.removeEventListener('click', addTask);
+        btn.setAttribute('style', 'box-shadow: inset 0 0 10px -6px #000');
         const removeItems = document.querySelectorAll('#container > div');
         const container = document.getElementById('container');
         removeItems.forEach((item) => {
             container.removeChild(item);
         });
+        taskEditor();
     }
 })();
+
+const taskEditor = (task) => {
+    const taskBody = createElement('button', 'task__body');
+    insertTask(taskBody);
+}
 
 const initialize = () => {
     if (!storage.check.__init__) {

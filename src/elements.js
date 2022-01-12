@@ -51,4 +51,18 @@ function Task(priority, dueDate, project, title, description) {
     this.description = description;
 };
 
-export {createElement, taskElements, Task};
+const filterSelect = (() => {
+    const select = document.querySelector('#filter-select');
+
+    // Adjusting the width of the select tag for the filter
+    select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
+    select.addEventListener('change', updateValue);
+    
+    function updateValue(e) {
+        select.setAttribute('style', `width: ${e.target.value.length * 7 + 15}px`);
+        return 0;
+    }
+    return {select};
+})();
+
+export {createElement, taskElements, Task, filterSelect};

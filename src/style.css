@@ -18,6 +18,10 @@ body {
     background: #ECECEC;
 }
 
+.flex {
+    display: flex;
+}
+
 .flex--col {
     display: flex;
     flex-flow: column;
@@ -106,6 +110,15 @@ body {
     border-radius: 20px;
 }
 
+.task__body {
+    width: 680px;
+    height: 705px;
+    margin-top: 100px;
+    background: radial-gradient(109.71% 65.59% at 50% 48.58%, rgba(224, 251, 255, 0.5) 71.67%, #70EEFF 100%);
+    box-shadow: 6px 6px 4px #B9D8DC;
+    border: none;
+    border-radius: 20px;
+}
 .tagFrame {
     display: flex;
     gap: 10px;
