@@ -16,6 +16,7 @@ const createElement = (element, ...classNames) => {
     return newObj
 };
 
+// Using in the homepage
 const taskElements = {
     get task() { 
         return createElement('div', 'task');
@@ -43,6 +44,21 @@ const taskElements = {
     },
 };
 
+const taskSets = {
+    get body() {
+        return createElement('section', 'flex', 'fgap--10');            
+    },
+    get label() {
+        return createElement('label', 'fs--22', 'm--0');
+    },
+    get input() {
+        return createElement('input');
+    },
+    get select() {
+        return createElement('select');
+    },
+}
+
 function Task(priority, dueDate, project, title, description) {
     this.priority = priority;
     this.dueDate = dueDate;
@@ -51,18 +67,9 @@ function Task(priority, dueDate, project, title, description) {
     this.description = description;
 };
 
-const filterSelect = (() => {
-    const select = document.querySelector('#filter-select');
+const addToContainer = (item) => {
+    const container = document.getElementById('container');
+    container.appendChild(item);
+}
 
-    // Adjusting the width of the select tag for the filter
-    select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
-    select.addEventListener('change', updateValue);
-    
-    function updateValue(e) {
-        select.setAttribute('style', `width: ${e.target.value.length * 7 + 15}px`);
-        return 0;
-    }
-    return {select};
-})();
-
-export {createElement, taskElements, Task, filterSelect};
+export {createElement, taskElements, taskSets, Task, addToContainer};
