@@ -12,52 +12,8 @@ const createElement = (element, ...classNames) => {
             this.addClass(attrs);
         }
     };
-
     return newObj
 };
-
-// Using in the homepage
-const taskElements = {
-    get task() { 
-        return createElement('div', 'task');
-    },
-    get tagFrame(){
-        return createElement('section', 'tagFrame')
-    },
-    get priority() {
-        return createElement('p', 'tags');
-    },
-    get dueDate() {
-        return createElement('p', 'tags');
-    },
-    get project() {
-        return createElement('p', 'tags');
-    },
-    get infoFrame() {
-        return createElement('section', 'infoFrame');
-    },
-    get title() {
-        return createElement('p', 'fs--22', 'm--0');
-    },
-    get description() {
-        return createElement('p', 'fs--18', 'm--0');
-    },
-};
-
-const taskSets = {
-    get body() {
-        return createElement('section', 'flex', 'fgap--10');            
-    },
-    get label() {
-        return createElement('label', 'fs--22', 'm--0');
-    },
-    get input() {
-        return createElement('input');
-    },
-    get select() {
-        return createElement('select');
-    },
-}
 
 function Task(priority, dueDate, project, title, description) {
     this.priority = priority;
@@ -67,9 +23,20 @@ function Task(priority, dueDate, project, title, description) {
     this.description = description;
 };
 
-const addToContainer = (item) => {
-    const container = document.getElementById('container');
-    container.appendChild(item);
-}
+const Container = (() => {
+    const add = (item) => {
+        const container = document.getElementById('container');
+        container.appendChild(item);
+    };
+    
+    const clear = () => {
+        const removeItems = document.querySelectorAll('#container > div');
+        const container = document.getElementById('container');
+        removeItems.forEach((item) => {
+            container.removeChild(item);
+        });
+    };
+    return {add, clear};
+})();
 
-export {createElement, taskElements, taskSets, Task, addToContainer};
+export {createElement, Task, Container};

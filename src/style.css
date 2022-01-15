@@ -47,6 +47,10 @@ body {
     font-size: 22px;
 }
 
+.cursor--p {
+    cursor: pointer;
+}
+
 .container {
     position: relative;
     width: 768px;
@@ -57,10 +61,9 @@ body {
 
 .header {
     position: absolute;
-    top: 0;
+    top: 2vh;
     z-index: 1;
     font-size: 36px;
-    margin: 20px 0;
     font-family: 'Fredoka One';
 }
 
@@ -81,7 +84,7 @@ body {
 
 .filter {
     position: absolute;
-    top: 100px;
+    top: 10vh;
     left: 50px;
     align-self: start;
     display: flex;
@@ -101,7 +104,6 @@ body {
 .filter > select {
     border: none;
     background: none;
-    cursor: pointer;
 }
 
 .task {
@@ -113,15 +115,16 @@ body {
 }
 
 .task__body {
+    position: absolute;
+    top: 10vh;
+    z-index: 1;
     width: 680px;
-    height: 60%;
-    margin-top: 100px;
-    background: radial-gradient(109.71% 65.59% at 50% 48.58%, rgb(224, 251, 255) 71.67%, #70EEFF 100%);
-    box-shadow: 6px 6px 4px #B9D8DC;
+    height: 60vh;
+    background: radial-gradient(109.71% 65.59% at 50% 48.58%, #FFFFFF 78.65%, #70EEFF 100%);
+    box-shadow: 2px 2px 4px 4px #C6E7EC;
     border: none;
     border-radius: 20px;
     font-family: 'Open Sans';
-    z-index: 1;
 }
 
 .tagFrame {
@@ -174,4 +177,33 @@ body {
 
 .btn__addTask::after {
     transform: rotate(90deg);
+}
+
+.btn__cancel {
+    position: absolute;
+    z-index: 2;
+    width: 50px;
+    height: 50px;
+    top: 10vh;
+    right: 5vw; 
+    border: none;
+    background: none;
+}
+
+.btn__cancel::before,
+.btn__cancel::after {
+    position: absolute;
+    content: "";
+    width: 8px;
+    height: 48px;
+    top: 4px;
+    right: 20px;
+    border-radius: 5px;
+    background-color: #70EEFF;
+    transform-origin: center;
+    transform: rotate(45deg);
+}
+
+.btn__cancel::after {
+    transform: rotate(-45deg);
 }
