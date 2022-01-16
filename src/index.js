@@ -2,7 +2,7 @@ import './style.css';
 import {format} from 'date-fns'
 import {storage} from './storage.js';
 import {createElement, Task, Container} from  './elements.js';
-import {taskSets, CancelBtn, AddTaskBtn, setTaskContents} from './page_components';
+import {taskSets, ProjectFilter, AddTaskBtn, CancelBtn, setTaskContents} from './page_components';
 
 const defaultTodo = new Task(
     "Medium",
@@ -104,70 +104,62 @@ const taskEditor = (task) => {
     }
 }
 
-const projectFilter = () => {
-    const filter = createElement('div', 'filter');
-    const label = createElement('label', 'm--0');
-    const select = createElement('select');    
-    const option = createElement('option');
-    const filterValue = (() => {
-        if(!storage.check.__filter__) {
-            storage.check = {
-                __filter__: 'All',
-            };
-        }
-        return storage.check.__filter__;
-    })();
+const updateFilterOption = () => {
+    const select = document.getElementById('filterSelect');
     const records = storage.check;
 
-    option.value = option.textContent = 'All';
-    select.appendChild(option);
-
     for (let item in records) {
-        if (records[item].project) {
-            const option = createElement('option');
-            option.value = option.textContent = records[item].project;
-            select.appendChild(option);
-        }
-        if ((filterValue === 'All' || filterValue === records[item].projec) && (typeof records[item]) === 'object') {
+        const projectName = records[item].project;
+
+        if (!projectName) continue;
+
+        const option = createElement('option');
+
+        option.value = option.textContent = projectName;
+        select.appendChild(option);
+    }
+
+    select.value = records.__filter__;
+    select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
+    select.addEventListener('change', () => {
+        storage.check = {
+            __filter__: select.value,
+        };
+        updateFilterOption();
+    });
+}
+
+const pushTask = () => {
+    const records = storage.check;
+    const filterValue = records.__filter__;
+    
+    for (let item in records) {
+        const projectName = records[item].project;
+
+        if ((filterValue === 'All' || filterValue === projectName) && (typeof records[item]) === 'object') {
             const taskContainer = setTaskContents(records[item]);
+            Container.add(taskContainer);
             taskContainer.addEventListener('click', () => {
                 Container.clear();
                 taskEditor(records[item]);
             });
         }
     }
-
-    label.id = 'filterLabel'
-    label.textContent = 'Project: ';
-    label.for = select.id = 'filterSelect';
-    select.name = 'projects'
-    select.value = filterValue;
-
-    filter.appendChild(label);
-    filter.appendChild(select);
-    Container.add(filter);
-    setFilterAttr();
-
-    // Adjusting the width of the select tag for the filter
-    function setFilterAttr() {
-        select.setAttribute('style', `width: ${select.value.length * 7 + 15}px`);
-        storage.check = {
-            __filter__: select.value,
-        }
-        select.addEventListener('change', setFilterAttr);
-        return 0;
-    };
 };
 
 const initialize = () => {
     if (!storage.check.__init__) {
         storage.check = {
             __default__: defaultTodo,
+            __filter__: 'All',
             __init__: true
         };
         initialize();
     } else {
-        projectFilter();
+        Container.add(ProjectFilter);
+        Container.add(AddTaskBtn);
+        updateFilterOption();
+        pushTask();
     }
 };
 

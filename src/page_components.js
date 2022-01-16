@@ -1,4 +1,4 @@
-import {createElement, Container} from  './elements.js';
+import {createElement} from  './elements.js';
 
 // Using in the homepage
 const taskElements = {
@@ -44,9 +44,27 @@ const taskSets = {
     },
 };
 
+const ProjectFilter = (() => {
+    const container = createElement('div', 'filter');
+    const label = createElement('label', 'm--0');
+    const select = createElement('select');
+    const option = createElement('option');
+    
+    label.id = 'filterLabel'
+    label.textContent = 'Project: ';
+    label.for = select.id = 'filterSelect';
+    select.name = 'projects';
+    option.value = option.textContent = 'All';
+
+    select.appendChild(option);
+    container.appendChild(label);
+    container.appendChild(select);
+
+    return container;
+})();
+
 const AddTaskBtn = (() => {
     const btn = createElement('button', 'btn__addTask', 'cursor--p');
-    Container.add(btn);
 
     return btn;
 })();
@@ -54,6 +72,7 @@ const AddTaskBtn = (() => {
 const CancelBtn = (() => {
     const btn = createElement('button', 'btn__cancel', 'cursor--p');
     btn.setAttribute('style', 'display: block');
+
     return btn;
 })();
 
@@ -82,10 +101,8 @@ const setTaskContents = (task) => {
     infoFrame.appendChild(description);
     container.appendChild(tagFrame);
     container.appendChild(infoFrame);
-
-    Container.add(container);
     
     return container;
 };
 
-export {taskSets, CancelBtn, AddTaskBtn, setTaskContents};
+export {taskSets, ProjectFilter, CancelBtn, AddTaskBtn, setTaskContents};
