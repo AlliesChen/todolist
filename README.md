@@ -2,6 +2,8 @@
 
 For The Odin Prject
 
+[Sample preview](https://allieschen.github.io/todolist/)
+
 ## Requirements
 
 - Have a *title*, *description*, *dueDate* and *priority* as todo-items
