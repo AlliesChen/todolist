@@ -118,8 +118,9 @@ body {
     position: absolute;
     top: 10vh;
     z-index: 1;
-    width: 680px;
-    height: 60vh;
+    width: 640px;
+    height: 56vh;
+    padding: 2vh 20px;
     background: radial-gradient(109.71% 65.59% at 50% 48.58%, #FFFFFF 78.65%, #70EEFF 100%);
     box-shadow: 2px 2px 4px 4px #C6E7EC;
     border: none;
