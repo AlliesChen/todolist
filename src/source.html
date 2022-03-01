@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO-List</title>
+    <script src="./index.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Baloo+2&family=Fredoka+One&family=Open+Sans:wght@300;500&display=swap');
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">TODO LIST</header>
+        <div class="filter-container ds-none">
+            <div class="project-filter">ALL</div>
+            <div class="display-filter">ALL</div>
+        </div>
+        <div class="list-container ds-none">
+            <div class="task-container">
+                <div class="tag-container">
+                    <div class="priority">Medium</div>
+                    <div class="due-date">2022/02/25</div>
+                    <div class="project">Project Name</div>
+                </div>
+                <div class="info-container">
+                    <div class="title">What you gonna make today</div>
+                    <div class="description">Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things more clear 😁</div>
+                </div>
+            </div>
+            <div class="task-container">
+                <div class="tag-container">
+                    <div class="priority">Medium</div>
+                    <div class="due-date">2022/02/25</div>
+                    <div class="project">Project Name</div>
+                </div>
+                <div class="info-container">
+                    <div class="title">What you gonna make today</div>
+                    <div class="description">Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things more clear 😁</div>
+                </div>
+            </div>
+        </div>
+        <div id="taskEditor" class="form-container">
+            <div class="form-items">
+                <label for="todoInput">TODO:</label>
+                <input type="text" class="todo-input" id="todoInput">
+            </div>
+            <div class="form-items">
+                <label for="dueDateInput">Due Date:</label>
+                <input type="date" class="due-date-input tag-container" id="dueDateInput" value="2022/03/01">
+            </div>
+            <div class="form-items">
+                <label for="priorityInput">Priority:</label>
+                <input type="text" class="priority-input tag-container" id="priorityInput" value="Medium">
+            </div>
+            <div class="form-items">
+                <label for="projectInput">Project:</label>
+                <input type="text" class="project-input tag-container" id="projectInput" value="myProject">
+            </div>
+            <div class="item-description">
+                <label for="descriptionInput">Description:</label>
+                <textarea type="text" class="description-input" id="descriptionInput" value="" maxlength="140" placeholder="140 letters in maximum"></textarea>
+            </div>
+            <div class="mark-completed-btn">Mark Completed</div>
+            <div class="cancel-edit-btn" title="cancel edit"><img src="./x--blue.svg" alt="cancel edit"></div>
+        </div>
+        <div id="projectList" class="form-container ds-none">
+            <ol class="project-list">
+                <li class="task-container">
+                    <p>1. myProject</p>
+                    <img src="./x.svg" alt="delete">
+                </li>
+                <li class="task-container">
+                    <p>2. myProject</p>
+                    <img src="./x.svg" alt="delete">
+                </li>
+                <li class="task-container">
+                    <p>3. myProject</p>
+                    <img src="./x.svg" alt="delete">
+                </li>
+            </ol>
+        </div>
+        <div class="project-list-btn bottom-btn left squre-btn"><img src="./list.svg" alt="project list"></div>
+        <div class="task-editor-btn bottom-btn right circle-btn"><img src="./plus.svg" alt="edit task"></div>
+        <div class="update-task-btn bottom-btn left squre-btn ds-none"><img src="./check-circle.svg" alt="update task"></div>
+        <div class="del-task-btn bottom-btn right circle-btn ds-none"><img src="./trash-2.svg" alt="delete task"></div>
+        <footer class="footer">FOR THE ODIN PROJECT</footer>
+    </div>
+</body>
+</html>
