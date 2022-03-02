@@ -6,7 +6,7 @@
   box-sizing: border-box;
 }
 
-.ds-none {
+.dp-none {
   display: none !important;
 }
 
@@ -39,14 +39,68 @@
   gap: 1rem;
 }
 
-.tag-container > div,
-input.tag-container {
+.tag-container > div {
   background: #fff;
   border-radius: 20px;
   padding: 0 0.5rem;
   box-shadow: 2px 2px 4px #aaa;
   font-size: 16px;
   border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-family: "Baloo 2";
+}
+
+.dropdown-btn {
+  width: auto;
+  padding: 0 0.5rem;
+  background: radial-gradient(
+    88.92% 73.08% at 50% 50%,
+    #dafbff 38.33%,
+    #70eeff 100%
+  );
+  box-shadow: 2px 2px 4px #b9d8dc;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: "Baloo 2";
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  width: auto;
+  padding: 0.25rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+  pointer-events: none;
+}
+
+.dropdown.active > .dropdown-menu {
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-link {
+  width: auto;
+  padding: 0.25rem 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-link:hover {
+  background-color: #ccc;
 }
 
 .list-container {
@@ -70,6 +124,7 @@ input.tag-container {
     #70eeff 100%
   );
   box-shadow: 6px 6px 4px #b9d8dc;
+  cursor: pointer;
 }
 
 .info-container {
@@ -119,6 +174,7 @@ input.tag-container {
   font-weight: 300;
   font-size: 22px;
   border: none;
+  width: 80%;
 }
 
 .header {
@@ -160,6 +216,7 @@ input.tag-container {
 
 .item-description textarea {
   height: 20vh;
+  font-family: "Open Sans";
   font-size: 18px;
   resize: none;
   border: none;
@@ -255,9 +312,8 @@ input.tag-container {
   top: 1rem;
 }
 
-.mark-completed-btn {
-  position: absolute;
-  bottom: 1rem;
+.completed-btn {
+  position: relative;
   width: 90%;
   left: 2rem;
   text-align: center;
@@ -267,6 +323,15 @@ input.tag-container {
   font-size: 18px;
   font-family: "Baloo 2";
   cursor: pointer;
+}
+
+.completed-btn.mark {
+  background: radial-gradient(
+    62.75% 62.75% at 21.57% 25.49%,
+    #dafbff 0%,
+    #70eeff 100%
+  );
+  box-shadow: 6px 6px 4px #b9d8dc;
 }
 
 .cancel-edit-btn:hover {
@@ -282,4 +347,30 @@ input.tag-container {
   width: 3rem;
   height: 3rem;
   cursor: pointer;
+}
+
+@media only screen and (max-width: 730px) {
+  .header {
+    font-size: 28px;
+  }
+
+  .task-container {
+    width: 90%;
+    border-radius: 20px;
+    background: radial-gradient(
+      94.4% 79.43% at 50% 50%,
+      #e0fbff 53.44%,
+      #70eeff 100%
+    );
+  }
+
+  .tag-container {
+    gap: 0.5rem;
+  }
+
+  .tag-container > div {
+    border-radius: 10px;
+    padding: 0 0.2rem;
+    font-size: 14px;
+  }
 }
