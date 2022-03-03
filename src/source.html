@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TODO-List</title>
-    <script src="./index.js"></script>
+    <script defer src="./index.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Baloo+2&family=Fredoka+One&family=Open+Sans:wght@300;500&display=swap');
@@ -23,7 +23,7 @@
         <div id="taskEditor" class="form-container dp-none">
             <div class="form-items">
                 <label for="todoInput">TODO:</label>
-                <input type="text" class="todo-input" id="todoInput" maxlength="35">
+                <input type="text" class="todo-input" id="todoInput" maxlength="35" placeholder="What needs to be done?">
             </div>
             <div class="form-items">
                 <label for="dueDateInput">Due Date:</label>
@@ -75,9 +75,9 @@
             </ol>
         </div>
         <div id="projectList-btn" class="project-list-btn bottom-btn left squre-btn"><img src="./icons/list.svg" alt="project list"></div>
-        <div id="taskEditor-btn" class="task-editor-btn bottom-btn right circle-btn"><img src="./icons/plus.svg" alt="edit task"></div>
-        <div id="updateTask-btn" class="update-task-btn bottom-btn left squre-btn dp-none"><img src="./icons/check-circle.svg" alt="update task"></div>
-        <div id="deleteTask-btn" class="del-task-btn bottom-btn right circle-btn dp-none"><img src="./icons/trash-2.svg" alt="delete task"></div>
+        <div id="addTask-btn" class="add-task-btn bottom-btn right circle-btn"><img src="./icons/plus.svg" alt="edit task"></div>
+        <div id="updateTask-btn" class="update-task-btn bottom-btn left squre-btn dp-none" title="update"><img src="./icons/check-circle.svg" alt="update task"></div>
+        <div id="deleteTask-btn" class="del-task-btn bottom-btn right circle-btn dp-none" title="delete"><img src="./icons/trash-2.svg" alt="delete task"></div>
         <footer class="footer">FOR THE ODIN PROJECT</footer>
     </div>
 </body>
