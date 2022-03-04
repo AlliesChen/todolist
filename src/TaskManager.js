@@ -121,7 +121,7 @@ const TaskManager = (() => {
       });
     }
   }
-
+  // for preparing a blank task form only
   addTaskBtn.addEventListener("click", (e) => {
     // Hide homepage
     e.target.closest("#addTask-btn").classList.toggle("dp-none");
@@ -130,8 +130,8 @@ const TaskManager = (() => {
     projectListBtn.classList.toggle("dp-none");
     // Shoe task editor page
     updateTaskBtn.classList.toggle("dp-none");
-    deleteTaskBtn.classList.toggle("dp-none");
     taskEditor.classList.toggle("dp-none");
+    deleteTaskBtn.classList.add("dp-none");
     // Set the initial form
     // Priority
     taskEditor.querySelector("[data-dropdown-priority]").textContent = "none";
@@ -195,8 +195,6 @@ const TaskManager = (() => {
           task.completed = taskEditor
             .querySelector("#markCompleted-btn")
             .classList.contains("mark");
-          // for createTask to check if it's been updated
-          task.modified = true;
         } else if (taskId === "addNewTask") {
           // enter with add new task button
           const newTaskId = hash(taskEditor.querySelector("#todoInput").value);
@@ -231,6 +229,44 @@ const TaskManager = (() => {
       })
       .then(() => {
         createTasks(true);
+        // Show homepage
+        projectListBtn.classList.toggle("dp-none");
+        filterContainer.classList.toggle("dp-none");
+        listContainer.classList.toggle("dp-none");
+        // Hide buttons for task editor
+        taskEditor.classList.toggle("dp-none");
+        addTaskBtn.classList.toggle("dp-none");
+        updateTaskBtn.classList.toggle("dp-none");
+        deleteTaskBtn.classList.toggle("dp-none");
+      });
+  });
+
+  deleteTaskBtn.addEventListener("click", () => {
+    const tasklist = new Promise((resolve, reject) => {
+      resolve(JSON.parse(localStorage.getItem("todolist")));
+      reject(new Error("something wrong when deleting"));
+    });
+    tasklist
+      .then((fullfilled) => {
+        const taskId =
+          taskEditor.querySelector("#todoInput").dataset.name ??
+          "Error: id missing, check delete";
+        const newList = fullfilled;
+        if (taskId in newList) {
+          delete newList[taskId];
+        } else {
+          throw new Error("id missing, check delete");
+        }
+        // Remove all the tasks
+        listContainer.querySelectorAll(".task-container").forEach((task) => {
+          listContainer.removeChild(task);
+        });
+        // Reload the updated info to localStorage
+        localStorage.removeItem("todolist");
+        localStorage.setItem("todolist", JSON.stringify(newList));
+      })
+      .then(() => {
+        createTasks();
         // Show homepage
         projectListBtn.classList.toggle("dp-none");
         filterContainer.classList.toggle("dp-none");

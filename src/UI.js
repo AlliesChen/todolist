@@ -62,7 +62,7 @@ taskEditor.querySelector("#cancelEdit-btn").addEventListener("click", () => {
   taskEditor.classList.toggle("dp-none");
   addTaskBtn.classList.toggle("dp-none");
   updateTaskBtn.classList.toggle("dp-none");
-  deleteTaskBtn.classList.toggle("dp-none");
+  deleteTaskBtn.classList.add("dp-none");
 });
 
 taskEditor
