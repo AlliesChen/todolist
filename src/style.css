@@ -27,10 +27,8 @@
 }
 
 .filter-container > div {
-  padding: 0 0.5rem;
-  background: #fff;
-  box-shadow: 2px 2px 4px 4px #aaa;
-  border-radius: 20px;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .tag-container {
@@ -111,20 +109,6 @@
 
 .list-container::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
-}
-
-.task-container {
-  width: 95%;
-  margin: 1rem;
-  padding: 1rem;
-  border-radius: 20px;
-  background: radial-gradient(
-    94.4% 79.43% at 50% 50%,
-    #e0fbff 53.44%,
-    #70eeff 100%
-  );
-  box-shadow: 6px 6px 4px #b9d8dc;
-  cursor: pointer;
 }
 
 .info-container {
@@ -231,17 +215,38 @@
   content: "Project: ";
 }
 
-.display-filter::before {
-  content: "Display: ";
-}
-
 .project-list {
   font-family: "Baloo 2";
 }
 
-.project-list > .task-container {
+.project-list > .project-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.project-item,
+.task-container {
+  width: 95%;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 20px;
+  background: radial-gradient(
+    94.4% 79.43% at 50% 50%,
+    #e0fbff 53.44%,
+    #70eeff 100%
+  );
+  box-shadow: 6px 6px 4px #b9d8dc;
+  cursor: pointer;
+}
+
+.task-counter {
+  font-family: "Open Sans";
+  font-weight: 300;
+  font-size: 14px;
+  display: flex;
+  gap: 0.5rem;
+  margin-right: 4rem;
 }
 
 .bottom-btn {

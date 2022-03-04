@@ -7,30 +7,37 @@ const TaskManager = (() => {
   const projectListBtn = document.getElementById("projectList-btn");
   const deleteTaskBtn = document.getElementById("deleteTask-btn");
 
+  // Using in creating tasks at first time entering the app
   const initTask = {
-    init: {
-      priority: "Medium",
-      dueDate: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      }),
-      project: "Project Name",
-      title: "What you gonna make today",
-      description:
-        "Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things clearer 😁",
-      completed: false,
+    priority: "Medium",
+    dueDate: new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
+    project: "myProject",
+    title: "What you gonna make today",
+    description:
+      "Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things clearer 😁",
+    completed: false,
+  };
+
+  // Create a container for all tasks
+  const tasks = {
+    tasks: {
+      init: initTask,
     },
   };
 
-  function hash(string) {
+  // Using in creating a new task
+  function hash(task) {
     let hashValue = 0;
-    const codeArr = string
+    const codeArr = Object.values(task)
       .toString()
       .split("")
       .map((c) => c.charCodeAt(0));
     for (let i = 0; i < codeArr.length; i += 1) {
-      hashValue += parseInt(codeArr[i], 10) * i;
+      hashValue += parseInt(codeArr[i], 16) * (i + 1);
     }
     const idValue = `id${hashValue.toString()}`;
     return idValue;
@@ -81,23 +88,25 @@ const TaskManager = (() => {
     try {
       todolist = await JSON.parse(localStorage.todolist);
     } catch (err) {
-      localStorage.setItem("todolist", JSON.stringify(initTask));
-      todolist = JSON.parse(localStorage.getItem("todolist"));
-      const hasInit = !!(await todolist.init);
+      localStorage.setItem("todolist", JSON.stringify(tasks));
+      todolist = await JSON.parse(localStorage.getItem("todolist"));
+      const hasInit = !!(await todolist.tasks.init);
       if (!hasInit) {
         throw new Error(`Something wrong while init, check: ${err}`);
       }
     }
     return todolist;
   }
+
   // While called by request of updating,
   // the prop makes sure that update executed
-  async function createTasks(isModified) {
-    const listItems = await checkLocalStorage();
-    if (await listItems) {
-      Object.entries(listItems).forEach((item) => {
+  async function createTasks() {
+    const itemsList = await checkLocalStorage();
+    if (await itemsList) {
+      const taskItems = itemsList.tasks;
+      Object.entries(taskItems).forEach((item) => {
         const [id, content] = item;
-        if (document.querySelector(`[data-name=${id}]`) && !isModified) return;
+        // if (document.querySelector(`[data-name=${id}]`)) return;
         // If the item exists, pass this round
         const taskContainer = document.createElement("div");
         taskContainer.classList.add("task-container");
@@ -121,6 +130,7 @@ const TaskManager = (() => {
       });
     }
   }
+
   // for preparing a blank task form only
   addTaskBtn.addEventListener("click", (e) => {
     // Hide homepage
@@ -166,56 +176,32 @@ const TaskManager = (() => {
         const taskId =
           taskEditor.querySelector("#todoInput").dataset.name ?? "addNewTask";
         const newList = fullfilled;
-        if (taskId in fullfilled) {
-          // enter with existed tasks
-          const task = newList[taskId];
-          // read and update task info from the form
-          // priority
-          task.priority = taskEditor.querySelector(
-            "[data-dropdown-priority]"
-          ).textContent;
-          // due date
-          task.dueDate = new Date(
+        const formContent = {
+          priority: taskEditor.querySelector("[data-dropdown-priority]")
+            .textContent,
+          dueDate: new Date(
             taskEditor.querySelector("#dueDateInput").value
           ).toLocaleDateString("en-US", {
             year: "numeric",
             month: "short",
             day: "numeric",
-          });
-          // project
-          task.project = taskEditor.querySelector(
-            "[data-dropdown-project]"
-          ).textContent;
-          // title
-          task.title = taskEditor.querySelector("#todoInput").value;
-          // description
-          task.description =
-            taskEditor.querySelector("#descriptionInput").value;
-          // status
-          task.completed = taskEditor
+          }),
+          project: taskEditor.querySelector("[data-dropdown-project]")
+            .textContent,
+          title: taskEditor.querySelector("#todoInput").value,
+          description: taskEditor.querySelector("#descriptionInput").value,
+          completed: taskEditor
             .querySelector("#markCompleted-btn")
-            .classList.contains("mark");
+            .classList.contains("mark"),
+        };
+        const newTaskId = hash(formContent);
+
+        if (taskId in newList.tasks) {
+          delete newList.tasks[taskId];
+          newList.tasks[newTaskId] = formContent;
         } else if (taskId === "addNewTask") {
           // enter with add new task button
-          const newTaskId = hash(taskEditor.querySelector("#todoInput").value);
-          newList[newTaskId] = {
-            priority: taskEditor.querySelector("[data-dropdown-priority]")
-              .textContent,
-            dueDate: new Date(
-              taskEditor.querySelector("#dueDateInput").value
-            ).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            }),
-            project: taskEditor.querySelector("[data-dropdown-project]")
-              .textContent,
-            title: taskEditor.querySelector("#todoInput").value,
-            description: taskEditor.querySelector("#descriptionInput").value,
-            completed: taskEditor
-              .querySelector("#markCompleted-btn")
-              .classList.contains("mark"),
-          };
+          newList.tasks[newTaskId] = formContent;
         } else {
           throw new Error("the entry of the task doesn't exit");
         }
@@ -228,7 +214,7 @@ const TaskManager = (() => {
         localStorage.setItem("todolist", JSON.stringify(newList));
       })
       .then(() => {
-        createTasks(true);
+        createTasks();
         // Show homepage
         projectListBtn.classList.toggle("dp-none");
         filterContainer.classList.toggle("dp-none");
@@ -237,7 +223,7 @@ const TaskManager = (() => {
         taskEditor.classList.toggle("dp-none");
         addTaskBtn.classList.toggle("dp-none");
         updateTaskBtn.classList.toggle("dp-none");
-        deleteTaskBtn.classList.toggle("dp-none");
+        deleteTaskBtn.classList.add("dp-none");
       });
   });
 
@@ -252,8 +238,8 @@ const TaskManager = (() => {
           taskEditor.querySelector("#todoInput").dataset.name ??
           "Error: id missing, check delete";
         const newList = fullfilled;
-        if (taskId in newList) {
-          delete newList[taskId];
+        if (taskId in newList.tasks) {
+          delete newList.tasks[taskId];
         } else {
           throw new Error("id missing, check delete");
         }
