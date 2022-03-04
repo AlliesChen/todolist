@@ -1,13 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
+const TaskManager = (() => {
+  const taskEditor = document.getElementById("taskEditor");
+  const addTaskBtn = document.getElementById("addTask-btn");
+  const updateTaskBtn = document.getElementById("updateTask-btn");
   const filterContainer = document.getElementById("filterContainer");
   const listContainer = document.getElementById("listContainer");
-  const taskEditor = document.getElementById("taskEditor");
-  const projectList = document.getElementById("projectList");
-  const addTaskBtn = document.getElementById("addTask-btn");
   const projectListBtn = document.getElementById("projectList-btn");
-  const updateTaskBtn = document.getElementById("updateTask-btn");
   const deleteTaskBtn = document.getElementById("deleteTask-btn");
-  const mode = { entry: "" };
 
   const initTask = {
     init: {
@@ -25,23 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   };
 
-  async function checkLocalStorage() {
-    let todolist;
-    try {
-      todolist = await JSON.parse(localStorage.todolist);
-    } catch (err) {
-      localStorage.setItem("todolist", JSON.stringify(initTask));
-      todolist = JSON.parse(localStorage.getItem("todolist"));
-      const hasInit = !!(await todolist.init);
-      if (!hasInit) {
-        throw new Error(`Something wrong while init, check: ${err}`);
-      }
+  function hash(string) {
+    let hashValue = 0;
+    const codeArr = string
+      .toString()
+      .split("")
+      .map((c) => c.charCodeAt(0));
+    for (let i = 0; i < codeArr.length; i += 1) {
+      hashValue += parseInt(codeArr[i], 10) * i;
     }
-    return todolist;
+    const idValue = `id${hashValue.toString()}`;
+    return idValue;
   }
 
-  function readTask(task) {
-    const [id, content] = task;
+  function readTask(id, content) {
     // Hide homepage
     addTaskBtn.classList.toggle("dp-none");
     filterContainer.classList.toggle("dp-none");
@@ -51,10 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTaskBtn.classList.toggle("dp-none");
     deleteTaskBtn.classList.toggle("dp-none");
     taskEditor.classList.toggle("dp-none");
-    // Setting entry
-    mode.entry = id;
     // Display the content of the task
     taskEditor.querySelector("#todoInput").value = content.title;
+    taskEditor.querySelector("#todoInput").dataset.name = id;
     const date = new Date(content.dueDate);
     const [month, day, year] = [
       date.getMonth(),
@@ -82,11 +76,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function createTasks() {
+  async function checkLocalStorage() {
+    let todolist;
+    try {
+      todolist = await JSON.parse(localStorage.todolist);
+    } catch (err) {
+      localStorage.setItem("todolist", JSON.stringify(initTask));
+      todolist = JSON.parse(localStorage.getItem("todolist"));
+      const hasInit = !!(await todolist.init);
+      if (!hasInit) {
+        throw new Error(`Something wrong while init, check: ${err}`);
+      }
+    }
+    return todolist;
+  }
+  // While called by request of updating,
+  // the prop makes sure that update executed
+  async function createTasks(isModified) {
     const listItems = await checkLocalStorage();
     if (await listItems) {
       Object.entries(listItems).forEach((item) => {
         const [id, content] = item;
+        if (document.querySelector(`[data-name=${id}]`) && !isModified) return;
+        // If the item exists, pass this round
         const taskContainer = document.createElement("div");
         taskContainer.classList.add("task-container");
 
@@ -103,40 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
         taskContainer.dataset.name = id;
         taskContainer.addEventListener("click", () => {
-          readTask(item);
+          readTask(id, content);
         });
         listContainer.appendChild(taskContainer);
       });
     }
   }
-
-  taskEditor.addEventListener("click", (e) => {
-    taskEditor.querySelectorAll(".dropdown").forEach((dropdown) => {
-      dropdown.classList.remove("active");
-    });
-
-    if (e.target.matches("[data-dropdown-priority]")) {
-      e.target.closest("#priorityMenu").classList.toggle("active");
-      return;
-    }
-    if (e.target.matches("[data-priority-link]")) {
-      e.target
-        .closest("#priorityMenu")
-        .querySelector("[data-dropdown-priority]").textContent =
-        e.target.textContent;
-    }
-
-    if (e.target.matches("[data-dropdown-project]")) {
-      e.target.closest("#projectMenu").classList.toggle("active");
-      return;
-    }
-    if (e.target.matches("[data-project-link]")) {
-      e.target
-        .closest("#projectMenu")
-        .querySelector("[data-dropdown-project]").textContent =
-        e.target.textContent;
-    }
-  });
 
   addTaskBtn.addEventListener("click", (e) => {
     // Hide homepage
@@ -148,8 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTaskBtn.classList.toggle("dp-none");
     deleteTaskBtn.classList.toggle("dp-none");
     taskEditor.classList.toggle("dp-none");
-    // Set entry
-    mode.entry = "addNewTask";
     // Set the initial form
     // Priority
     taskEditor.querySelector("[data-dropdown-priority]").textContent = "none";
@@ -174,49 +156,6 @@ document.addEventListener("DOMContentLoaded", () => {
     taskEditor.querySelector("#markCompleted-btn").classList.remove("mark");
   });
 
-  taskEditor.querySelector("#cancelEdit-btn").addEventListener("click", () => {
-    // Show homepage
-    projectListBtn.classList.toggle("dp-none");
-    filterContainer.classList.toggle("dp-none");
-    listContainer.classList.toggle("dp-none");
-    // Hide buttons for task editor
-    taskEditor.classList.toggle("dp-none");
-    addTaskBtn.classList.toggle("dp-none");
-    updateTaskBtn.classList.toggle("dp-none");
-    deleteTaskBtn.classList.toggle("dp-none");
-  });
-
-  projectListBtn.addEventListener("click", () => {
-    // Hide homepage
-    filterContainer.classList.toggle("dp-none");
-    listContainer.classList.toggle("dp-none");
-    addTaskBtn.classList.toggle("dp-none");
-    // Show project list
-    projectList.classList.toggle("dp-none");
-  });
-
-  taskEditor
-    .querySelector("#markCompleted-btn")
-    .addEventListener("click", (e) => {
-      e.target.classList.toggle("mark");
-      e.target.textContent = e.target.classList.contains("mark")
-        ? "Completed"
-        : "Mark Completed";
-    });
-
-  function hash(string) {
-    let hashValue = 0;
-    const codeArr = string
-      .toString()
-      .split("")
-      .map((c) => c.charCodeAt(0));
-    for (let i = 0; i < codeArr.length; i += 1) {
-      hashValue += parseInt(codeArr[i], 10) * i;
-    }
-    const idValue = `id${hashValue.toString()}`;
-    return idValue;
-  }
-
   updateTaskBtn.addEventListener("click", () => {
     const tasklist = new Promise((resolve, reject) => {
       resolve(JSON.parse(localStorage.getItem("todolist")));
@@ -224,10 +163,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     tasklist
       .then((fullfilled) => {
+        const taskId =
+          taskEditor.querySelector("#todoInput").dataset.name ?? "addNewTask";
         const newList = fullfilled;
-        if (mode.entry in fullfilled) {
+        if (taskId in fullfilled) {
           // enter with existed tasks
-          const task = newList[mode.entry];
+          const task = newList[taskId];
           // read and update task info from the form
           // priority
           task.priority = taskEditor.querySelector(
@@ -254,7 +195,9 @@ document.addEventListener("DOMContentLoaded", () => {
           task.completed = taskEditor
             .querySelector("#markCompleted-btn")
             .classList.contains("mark");
-        } else if (mode.entry === "addNewTask") {
+          // for createTask to check if it's been updated
+          task.modified = true;
+        } else if (taskId === "addNewTask") {
           // enter with add new task button
           const newTaskId = hash(taskEditor.querySelector("#todoInput").value);
           newList[newTaskId] = {
@@ -287,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("todolist", JSON.stringify(newList));
       })
       .then(() => {
-        createTasks();
+        createTasks(true);
         // Show homepage
         projectListBtn.classList.toggle("dp-none");
         filterContainer.classList.toggle("dp-none");
@@ -299,5 +242,11 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteTaskBtn.classList.toggle("dp-none");
       });
   });
-  createTasks();
+  return { createTasks };
+})();
+
+document.addEventListener("DOMContentLoaded", () => {
+  TaskManager.createTasks();
 });
+
+export default TaskManager;
