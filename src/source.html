@@ -75,15 +75,27 @@
             </div>
             <div id="markCompleted-btn" class="completed-btn">Mark Completed</div>
             <div id="cancelEdit-btn" class="cancel-edit-btn" title="cancel edit"><img src="" alt="cancel edit"></div>
+            <div id="updateTask-btn" class="update-task-btn bottom-btn left squre-btn dp-none" title="update"><img src="" alt="update task"></div>
+            <div id="deleteTask-btn" class="del-task-btn bottom-btn right circle-btn dp-none" title="delete"><img src="" alt="delete task"></div>
         </div>
         <div id="projectContainer" class="form-container dp-none">
             <ol id="projectList" class="project-list">
             </ol>
+            <div id="projectAdd-btn" class="add-project-btn bottom-btn right circle-btn dp-none"><img src="" alt="add project"></div>
         </div>
         <div id="projectList-btn" class="project-list-btn bottom-btn left squre-btn"><img src="" alt="project list"></div>
         <div id="addTask-btn" class="add-task-btn bottom-btn right circle-btn"><img src="" alt="edit task"></div>
-        <div id="updateTask-btn" class="update-task-btn bottom-btn left squre-btn dp-none" title="update"><img src="" alt="update task"></div>
-        <div id="deleteTask-btn" class="del-task-btn bottom-btn right circle-btn dp-none" title="delete"><img src="" alt="delete task"></div>
+        <div id="popUp" class="pop-up dp-none">
+            <form class="popUp-container" data-form>
+                <label for="popUpInput" class="popUp-label">Some Message Here</label>
+                <input type="text" id="popUpInput" class="popUp-input dp-none" placeholder="Project Name">
+                <div class="popUp-buttons" data-buttons>
+                    <button class="warning">NO</button>
+                    <button class="success">OK</button>
+                </div>
+            </form>
+
+        </div>
         <footer class="footer">FOR THE ODIN PROJECT</footer>
     </div>
 </body>

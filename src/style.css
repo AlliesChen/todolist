@@ -226,7 +226,8 @@
 }
 
 .project-item,
-.task-container {
+.task-container,
+.popUp-container {
   width: 95%;
   margin: 1rem;
   padding: 1rem;
@@ -255,8 +256,9 @@
   justify-content: center;
   width: 5rem;
   height: 5rem;
-  position: absolute;
+  position: fixed;
   bottom: 10vh;
+  cursor: pointer;
 }
 
 .right {
@@ -284,7 +286,17 @@
   box-shadow: 6px 6px 4px #b9d8dc;
 }
 
-.add-task-btn {
+.add-project-btn {
+  background: radial-gradient(
+    62.75% 62.75% at 21.57% 25.49%,
+    #e1ffe1 0%,
+    #70ec70 100%
+  );
+  box-shadow: 6px 6px 4px #bcdcb9;
+}
+
+.add-task-btn,
+.success {
   background: radial-gradient(
     62.75% 62.75% at 21.57% 25.49%,
     #dafbff 0%,
@@ -293,7 +305,8 @@
   box-shadow: 6px 6px 4px #b9d8dc;
 }
 
-.del-task-btn {
+.del-task-btn,
+.warning {
   background: radial-gradient(
     62.75% 62.75% at 21.57% 25.49%,
     #ffe5da 0%,
@@ -315,6 +328,11 @@
   position: absolute;
   right: 1rem;
   top: 1rem;
+}
+
+.cancel-edit-btn:hover {
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .completed-btn {
@@ -340,18 +358,68 @@
   box-shadow: 6px 6px 4px #b9d8dc;
 }
 
-.cancel-edit-btn:hover {
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 .cancel-edit-btn > img,
 .update-task-btn > img,
 .del-task-btn > img,
 .add-task-btn > img,
-.project-list-btn > img {
+.project-list-btn > img,
+.projectAdd-btn > img {
   width: 3rem;
   height: 3rem;
+}
+
+.pop-up {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.pop-up > form {
+  width: 30vw;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Open Sans";
+  gap: 0.5rem;
+  flex-direction: column;
+  border-radius: 20px;
+  cursor: default;
+}
+
+.popUp-container > input {
+  width: 75%;
+  font-family: "Open Sans";
+  border: none;
+  box-shadow: 2px 2px 4px #aaa;
+  border-radius: 5px;
+  padding: 0 0.5rem;
+}
+
+.popUp-container > p {
+  color: #ff0000;
+}
+
+.popUp-container > p::before {
+  content: "⚠ ";
+}
+
+.popUp-container > .popUp-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+}
+
+.popUp-container button {
+  width: 35%;
+  border-radius: 20px;
+  font-family: "Baloo 2";
+  border: none;
   cursor: pointer;
 }
 

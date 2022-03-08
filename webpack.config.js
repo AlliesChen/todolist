@@ -6,6 +6,7 @@ module.exports = {
   entry: {
     UI: "./src/UI.js",
     TaskManager: "./src/TaskManager.js",
+    ProjectManager: "./src/ProjectManager.js",
   },
   devtool: "inline-source-map",
   output: {
