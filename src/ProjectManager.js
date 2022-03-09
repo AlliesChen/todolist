@@ -1,97 +1,47 @@
 import XSVG from "./icons/x.svg";
 import folderPlusSVG from "./icons/folder-plus.svg";
+import { showMsgPopUp, event } from "./PopUp";
+import { addTaskBtn, filterContainer, projectListBtn } from "./UI";
+import Storage from "./Storage";
 
 const ProjectManager = (() => {
   const projectContainer = document.getElementById("projectContainer");
-  const projectListBtn = document.getElementById("projectList-btn");
-  const filterContainer = document.getElementById("filterContainer");
   const listContainer = document.getElementById("listContainer");
-  const addTaskBtn = document.getElementById("addTask-btn");
   const projectAddBtn = document.getElementById("projectAdd-btn");
-  const popUp = document.getElementById("popUp");
 
   projectAddBtn.querySelector("img").src = folderPlusSVG;
 
-  function showMsgPopUp(msg, useInput, err) {
-    popUp.classList.remove("dp-none");
-    popUp.querySelector("label").textContent = msg;
-    if (useInput) {
-      popUp.querySelector("input").classList.remove("dp-none");
-    }
-    if (err) {
-      if (popUp.querySelector("[data-err]")) {
-        const childNode = popUp.querySelector("[data-err]");
-        popUp.querySelector("[data-form]").removeChild(childNode);
-      }
-      const hint = document.createElement("p");
-      hint.textContent = err;
-      hint.dataset.err = true;
-      popUp
-        .querySelector("[data-form]")
-        .insertBefore(hint, popUp.querySelector("[data-buttons]"));
+  function removeProjectListItems() {
+    const projectList = document.getElementById("projectList");
+    if (projectList.children[0]) {
+      projectList.removeChild(projectList.children[0]);
+      removeProjectListItems();
     }
     return 0;
   }
 
-  function usePopUpMsg(callback) {
-    popUp.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (e.target.matches("#popUp") || e.target.matches(".warning")) {
-        popUp.classList.add("dp-none");
-        popUp.querySelector("input").value = "";
-        if (popUp.querySelector("[data-err]")) {
-          const childNode = popUp.querySelector("[data-err]");
-          popUp.querySelector("[data-form]").removeChild(childNode);
-        }
-        return false;
-      }
-      if (e.target.matches(".success")) {
-        popUp.classList.add("dp-none");
-        const popUpValue = popUp.querySelector("input").value ?? true;
-        popUp.querySelector("input").value = "";
-        callback(popUpValue);
-      }
-      return this;
-    });
-  }
-
-  async function addProject(name) {
+  async function deleteProject(projectNode) {
+    const projectId = projectNode.dataset.name;
     const todolist = await JSON.parse(localStorage.getItem("todolist"));
-    const { project } = await todolist;
-    if (name in (await project)) {
-      showMsgPopUp("Create a project", true, "the name has been used");
-    }
-    if (!name) {
-      showMsgPopUp("Create a project", true, "Please enter a name");
-    }
+    const newList = await todolist;
+    delete newList.projects[projectId];
+    localStorage.clear();
+    localStorage.setItem("todolist", JSON.stringify(newList));
+    removeProjectListItems();
   }
 
-  projectAddBtn.addEventListener("click", () => {
-    showMsgPopUp("Create a project", true);
-    usePopUpMsg(addProject);
-  });
-
-  async function getProjects() {
-    try {
-      const appList = await JSON.parse(localStorage.getItem("todolist"));
-      if (!(await appList.project)) {
-        appList.project = { myProject: 0 };
-        localStorage.setItem("todolist", JSON.stringify(appList));
-        getProjects();
-      }
-      return appList.project;
-    } catch (err) {
-      throw new Error("todolist isn't exit");
-    }
-  }
-
-  // While called by request of updating,
-  // the prop makes sure that update executed
   async function createProjectList() {
-    const projects = await getProjects();
+    const todolist = await Storage.getTodolist();
+    const projects = await todolist.projects;
     let counter = 1;
     Object.entries(projects).forEach((project) => {
-      const [name, count] = project;
+      const [name] = project;
+      let [, count] = project;
+      Object.values(todolist.tasks).forEach((task) => {
+        if (name === task.project) {
+          count += 1;
+        }
+      });
       // if (document.querySelector(`[data-name=${id}]`)) return;
       // If the item exists, pass this round
       const projectItem = document.createElement("li");
@@ -103,22 +53,49 @@ const ProjectManager = (() => {
               <span>${count}</span>
               <div>task in the project</div>
             </div>
-            <img src="${XSVG}" alt="delete">
+            <div class="delete-sign">
+              <img src="${XSVG}" alt="delete">
+            </div>
           `;
       counter += 1;
       projectItem.dataset.name = name;
+      projectItem
+        .querySelector(".delete-sign")
+        .addEventListener("click", () => {
+          deleteProject(projectItem).then(() => {
+            createProjectList();
+          });
+        });
       projectContainer.querySelector("ol").appendChild(projectItem);
     });
   }
 
-  function removeProjectListItems() {
-    const projectList = document.getElementById("projectList");
-    if (projectList.children[0]) {
-      projectList.removeChild(projectList.children[0]);
-      removeProjectListItems();
+  async function addProject(name) {
+    const todolist = await Storage.getTodolist();
+    const { projects } = await todolist;
+    if (name in (await projects)) {
+      showMsgPopUp("Create a project", true, "the name has been used");
+      return this;
     }
+    if (name === false || !name.toString().trim()) {
+      showMsgPopUp("Create a project", true, "Please enter a name");
+      return this;
+    }
+    projects[name] = 0;
+    const newList = todolist;
+    newList.projects = projects;
+    localStorage.clear();
+    localStorage.setItem("todolist", JSON.stringify(newList));
+    removeProjectListItems();
+    createProjectList();
     return 0;
   }
+
+  projectAddBtn.addEventListener("click", () => {
+    showMsgPopUp("Create a project", true);
+    // setter
+    event.fn = addProject;
+  });
 
   projectListBtn.addEventListener("click", () => {
     // Hide homepage
@@ -132,6 +109,7 @@ const ProjectManager = (() => {
     removeProjectListItems();
     createProjectList();
   });
+  return { createProjectList };
 })();
 
 export default ProjectManager;

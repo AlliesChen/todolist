@@ -4,9 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
-    UI: "./src/UI.js",
-    TaskManager: "./src/TaskManager.js",
-    ProjectManager: "./src/ProjectManager.js",
+    App: "./src/App.js",
   },
   devtool: "inline-source-map",
   output: {

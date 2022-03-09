@@ -61,13 +61,10 @@
             <div class="form-items">
                 <div>Project:</div>
                 <div id= "projectMenu" class='dropdown' data-dropdown>
-                    <button class='dropdown-btn' aria-label="project menu" data-dropdown-project>none</button>
-                    <div class='dropdown-menu' data-dropdown-menu>
-                        <p class='dropdown-link' data-project-link>myProject</p>
-                        <p class='dropdown-link' data-project-link>Project Name</p>
-                        <p class='dropdown-link' data-project-link>test2</p>
-                    </div>
+                    <button class='dropdown-btn' aria-label="project menu" data-dropdown-project data-priority="none">none</button>
+                    <div class='dropdown-menu' data-dropdown-menu></div>
                 </div>
+                <button>+ New Project</button>
             </div>
             <div class="item-description">
                 <label for="descriptionInput">Description:</label>
@@ -88,7 +85,7 @@
         <div id="popUp" class="pop-up dp-none">
             <form class="popUp-container" data-form>
                 <label for="popUpInput" class="popUp-label">Some Message Here</label>
-                <input type="text" id="popUpInput" class="popUp-input dp-none" placeholder="Project Name">
+                <input type="text" id="popUpInput" class="popUp-input dp-none" placeholder="Project Name" maxlength="25">
                 <div class="popUp-buttons" data-buttons>
                     <button class="warning">NO</button>
                     <button class="success">OK</button>

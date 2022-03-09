@@ -53,7 +53,8 @@
   font-family: "Baloo 2";
 }
 
-.dropdown-btn {
+.dropdown-btn,
+.dropdown + button {
   width: auto;
   padding: 0 0.5rem;
   background: radial-gradient(
@@ -223,6 +224,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: default;
+}
+
+.project-item > .delete-sign {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
 
 .project-item,
@@ -258,7 +266,6 @@
   height: 5rem;
   position: fixed;
   bottom: 10vh;
-  cursor: pointer;
 }
 
 .right {
@@ -345,7 +352,6 @@
   box-shadow: 2px 2px 4px 4px #c6e7ec;
   font-size: 18px;
   font-family: "Baloo 2";
-  cursor: pointer;
   user-select: none;
 }
 
@@ -358,12 +364,22 @@
   box-shadow: 6px 6px 4px #b9d8dc;
 }
 
+.cancel-edit-btn,
+.update-task-btn,
+.del-task-btn,
+.add-task-btn,
+.project-list-btn,
+.add-project-btn,
+.completed-btn {
+  cursor: pointer;
+}
+
 .cancel-edit-btn > img,
 .update-task-btn > img,
 .del-task-btn > img,
 .add-task-btn > img,
 .project-list-btn > img,
-.projectAdd-btn > img {
+.add-project-btn > img {
   width: 3rem;
   height: 3rem;
 }
@@ -421,6 +437,21 @@
   font-family: "Baloo 2";
   border: none;
   cursor: pointer;
+}
+
+button[data-priority="Low"] {
+  background: radial-gradient(86.68% 50% at 50% 50%, #e8ffd6 0%, #9eff9e 100%);
+  box-shadow: 2px 2px 4px rgba(210, 189, 79, 0.25);
+}
+
+button[data-priority="Medium"] {
+  background: radial-gradient(113.98% 50% at 50% 50%, #fffae0 0%, #ffef9c 100%);
+  box-shadow: 2px 2px 4px rgba(210, 189, 79, 0.25);
+}
+
+button[data-priority="High"] {
+  background: radial-gradient(167.32% 50% at 50% 50%, #ffddef 0%, #ffbcdf 100%);
+  box-shadow: 2px 2px 4px rgba(197, 110, 154, 0.25);
 }
 
 @media only screen and (max-width: 730px) {
