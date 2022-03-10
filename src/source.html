@@ -14,15 +14,8 @@
         <header class="header">TODO LIST</header>
         <div id="filterContainer" class="filter-container">
             <div id="projectFilter">
-                <div>Project:</div>
-                <div id= "projectFilter" class='dropdown' data-dropdown>
-                    <button class='dropdown-btn' aria-label="project filter" data-dropdown-project>All</button>
-                    <div class='dropdown-menu' data-dropdown-menu>
-                        <p class='dropdown-link' data-project-link>All</p>
-                        <p class='dropdown-link' data-project-link>myProject</p>
-                        <p class='dropdown-link' data-project-link>Project Name</p>
-                    </div>
-                </div>
+                <label for="projectFilterInput">Project:</label>
+                <input id="projectFilterInput" type="text" placeholder="search">
             </div>
             <div id="displayFilter">
                 <div>Display:</div>
@@ -49,7 +42,7 @@
             </div>
             <div class="form-items">
                 <div>Priority:</div>
-                <div id= "priorityMenu" class='dropdown' data-dropdown>
+                <div id= "priorityMenu" class='dropdown' data-dropdown data-color>
                     <button class='dropdown-btn' aria-label="priority menu" data-dropdown-priority>none</button>
                     <div class='dropdown-menu' data-dropdown-menu>
                         <p class='dropdown-link' data-priority-link>High</p>
@@ -60,7 +53,7 @@
             </div>
             <div class="form-items">
                 <div>Project:</div>
-                <div id= "projectMenu" class='dropdown' data-dropdown>
+                <div id= "projectMenu" class='dropdown' data-dropdown data-color>
                     <button class='dropdown-btn' aria-label="project menu" data-dropdown-project data-priority="none">none</button>
                     <div class='dropdown-menu' data-dropdown-menu></div>
                 </div>
@@ -93,7 +86,9 @@
             </form>
 
         </div>
-        <footer class="footer">FOR THE ODIN PROJECT</footer>
+        <footer class="footer">
+            <small>© 2022 YuPung development for The Odin Project. All rights reserved.</small>
+        </footer>
     </div>
 </body>
 </html>

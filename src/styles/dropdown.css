@@ -1,0 +1,55 @@
+.dropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-family: "Baloo 2";
+}
+
+.dropdown-btn,
+.dropdown + button {
+  width: auto;
+  padding: 0 0.5rem;
+  background: radial-gradient(
+    88.92% 73.08% at 50% 50%,
+    #dafbff 38.33%,
+    #70eeff 100%
+  );
+  box-shadow: 2px 2px 4px #b9d8dc;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: "Baloo 2";
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  width: max-content;
+  padding: 0.25rem;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 150ms ease-in-out, transform 150ms ease-in-out;
+  pointer-events: none;
+}
+
+.dropdown.active > .dropdown-menu {
+  opacity: 1;
+  z-index: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-link {
+  width: auto;
+  padding: 0.25rem 0;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown-link:hover {
+  background-color: #ccc;
+}

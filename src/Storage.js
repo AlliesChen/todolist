@@ -23,7 +23,7 @@ const Storage = (() => {
       myProject: 0,
     },
     preference: {
-      projectFilter: "All",
+      projectFilter: "",
       displayFilter: "All",
     },
   };

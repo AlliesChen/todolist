@@ -1,4 +1,8 @@
-import "./style.css";
+import "./styles/style.css";
+import "./styles/container.css";
+import "./styles/button.css";
+import "./styles/dropdown.css";
+
 import blueXSVG from "./icons/x--blue.svg";
 import listSVG from "./icons/list.svg";
 import plusSVG from "./icons/plus.svg";
@@ -45,32 +49,15 @@ const UI = (() => {
     return formElement;
   }
 
-  filterContainer.addEventListener("click", (e) => {
-    if (e.target.matches("[data-dropdown-display]")) {
-      e.target.closest("#displayFilter").classList.toggle("active");
-      return;
-    }
-    if (e.target.matches("[data-display-link]")) {
-      e.target
-        .closest("#displayFilter")
-        .querySelector("[data-dropdown-display]").textContent =
-        e.target.textContent;
-    }
-
-    if (e.target.matches("[data-dropdown-project]")) {
-      e.target.closest("#projectFilter").classList.toggle("active");
-      return;
-    }
-    if (e.target.matches("[data-project-link]")) {
-      e.target
-        .closest("#projectFilter")
-        .querySelector("[data-dropdown-project]").textContent =
-        e.target.textContent;
-    }
-    filterContainer.querySelectorAll(".dropdown").forEach((dropdown) => {
-      dropdown.classList.remove("active");
+  function colorBtns() {
+    const btnContainers = taskEditor.querySelectorAll(".dropdown[data-color]");
+    const colorName = taskEditor.querySelector(
+      "#priorityMenu > button"
+    ).textContent;
+    btnContainers.forEach((container) => {
+      container.setAttribute("data-color", colorName);
     });
-  });
+  }
 
   taskEditor.addEventListener("click", (e) => {
     taskEditor.querySelectorAll(".dropdown").forEach((dropdown) => {
@@ -86,7 +73,7 @@ const UI = (() => {
         .closest("#priorityMenu")
         .querySelector("[data-dropdown-priority]");
       priorityBtn.textContent = e.target.textContent;
-      priorityBtn.dataset.priority = e.target.textContent;
+      colorBtns();
     }
 
     if (e.target.matches("[data-dropdown-project]")) {
@@ -121,7 +108,7 @@ const UI = (() => {
         ? "Completed"
         : "Mark Completed";
     });
-  return { setTaskEditorPage, getFormElement };
+  return { setTaskEditorPage, getFormElement, colorBtns };
 })();
 
 export default UI;

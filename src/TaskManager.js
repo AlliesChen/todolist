@@ -9,6 +9,7 @@ import UI, {
   listContainer,
 } from "./UI";
 import Storage, { hash, dateMaker } from "./Storage";
+import Filter from "./Fliter";
 
 const TaskManager = (() => {
   async function setProjectList() {
@@ -73,7 +74,6 @@ const TaskManager = (() => {
     // Display the content of the task
     // priority
     priorityEl.textContent = priority;
-    priorityEl.dataset.priority = priority;
     // dueDate
     dueDateEl.value = dateMaker(dueDate);
     // project
@@ -88,34 +88,47 @@ const TaskManager = (() => {
       completedEl.textContent = "Completed";
       completedEl.classList.add("mark");
     }
+    UI.colorBtns();
   }
 
   async function createTasks() {
     const itemsList = await Storage.getTodolist();
-    if (await itemsList) {
+    // if (await itemsList)
+    try {
       const taskItems = itemsList.tasks;
       Object.entries(taskItems).forEach((item) => {
         const [id, content] = item;
         const taskContainer = document.createElement("div");
+        const description =
+          // fold description if it's too long
+          content.description.length > 71
+            ? content.description.slice(0, 71).concat("...")
+            : content.description;
+        const priorityIsNone = content.priority === "none" ? "dp-none" : "";
+        const projectIsNone = content.project === "none" ? "dp-none" : "";
         taskContainer.classList.add("task-container");
-
         taskContainer.innerHTML = `
-          <div class="tag-container">
-            <div class="priority">${content.priority}</div>
+          <div class="tag-container" data-color="${content.priority}">
+            <div class="priority ${priorityIsNone}">${content.priority}</div>
             <div class="due-date">${content.dueDate}</div>
-            <div class="project">${content.project}</div>
+            <div class="project ${projectIsNone}">${content.project}</div>
           </div>
           <div class="info-container">
             <div class="title">${content.title}</div>
-            <div class="description">${content.description}</div>
+            <div class="description">${description}</div>
           </div>
         `;
         taskContainer.dataset.name = id;
+        taskContainer.dataset.status = content.completed;
         taskContainer.addEventListener("click", () => {
           readTask(id, content);
         });
         listContainer.appendChild(taskContainer);
       });
+      Filter.filterTasks();
+      Filter.sortTasks();
+    } catch (err) {
+      throw new Error(err);
     }
   }
 
@@ -152,11 +165,16 @@ const TaskManager = (() => {
       completedEl,
     } = UI.getFormElement();
     // Priority
+    taskEditor
+      .querySelector("#priorityMenu")
+      .setAttribute("data-color", "default");
     priorityEl.textContent = "none";
-    priorityEl.dataset.priority = "none";
     // due date
     dueDateEl.value = dateMaker(Date.now());
     // project
+    taskEditor
+      .querySelector("#projectMenu")
+      .setAttribute("data-color", "default");
     projectEl.textContent = "none";
     // title
     titleEl.value = "";
