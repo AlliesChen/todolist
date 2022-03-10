@@ -3,6 +3,7 @@ import folderPlusSVG from "./icons/folder-plus.svg";
 import { showMsgPopUp, event } from "./PopUp";
 import { addTaskBtn, filterContainer, projectListBtn } from "./UI";
 import Storage from "./Storage";
+import TaskManager from "./TaskManager";
 
 const ProjectManager = (() => {
   const projectContainer = document.getElementById("projectContainer");
@@ -24,10 +25,16 @@ const ProjectManager = (() => {
     const projectId = projectNode.dataset.name;
     const todolist = await JSON.parse(localStorage.getItem("todolist"));
     const newList = await todolist;
+    Object.values(newList.tasks).forEach((task) => {
+      if (task.project === projectId) {
+        // eslint-disable-next-line no-param-reassign
+        task.project = "none";
+      }
+    });
     delete newList.projects[projectId];
     localStorage.clear();
     localStorage.setItem("todolist", JSON.stringify(newList));
-    removeProjectListItems();
+    return 0;
   }
 
   async function createProjectList() {
@@ -51,7 +58,7 @@ const ProjectManager = (() => {
             <p data-project>${counter}. ${name.toString()}</p>
             <div class="task-counter">
               <span>${count}</span>
-              <div>task in the project</div>
+              <div>task${count > 1 ? "s" : ""} in the project</div>
             </div>
             <div class="delete-sign">
               <img src="${XSVG}" alt="delete">
@@ -62,9 +69,18 @@ const ProjectManager = (() => {
       projectItem
         .querySelector(".delete-sign")
         .addEventListener("click", () => {
-          deleteProject(projectItem).then(() => {
-            createProjectList();
-          });
+          showMsgPopUp(
+            `${count} task${count > 1 ? "s" : ""} will be set to Project: none`,
+            false
+          );
+          event.fn = () => {
+            Promise.resolve(deleteProject(projectItem)).then(() => {
+              removeProjectListItems();
+              createProjectList();
+              TaskManager.clearList();
+              TaskManager.createTasks();
+            });
+          };
         });
       projectContainer.querySelector("ol").appendChild(projectItem);
     });

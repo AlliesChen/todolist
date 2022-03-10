@@ -132,6 +132,13 @@ const TaskManager = (() => {
     }
   }
 
+  function clearList() {
+    // Remove all the tasks
+    listContainer.querySelectorAll(".task-container").forEach((task) => {
+      listContainer.removeChild(task);
+    });
+  }
+
   function showHomePage(newList) {
     // Show homepage
     projectListBtn.classList.toggle("dp-none");
@@ -143,9 +150,7 @@ const TaskManager = (() => {
     updateTaskBtn.classList.toggle("dp-none");
     deleteTaskBtn.classList.add("dp-none");
     // Remove all the tasks
-    listContainer.querySelectorAll(".task-container").forEach((task) => {
-      listContainer.removeChild(task);
-    });
+    clearList();
     // Reload the updated info to localStorage
     localStorage.removeItem("todolist");
     localStorage.setItem("todolist", JSON.stringify(newList));
@@ -248,7 +253,7 @@ const TaskManager = (() => {
 
   deleteTaskBtn.addEventListener("click", triggerPopUp);
 
-  return { createTasks };
+  return { createTasks, clearList };
 })();
 
 export default TaskManager;
