@@ -53,3 +53,10 @@
 .dropdown-link:hover {
   background-color: #ccc;
 }
+
+@media only screen and (max-width: 730px) {
+  .dropdown-btn,
+  .dropdown + button {
+    padding: 0 0.2rem;
+  }
+}

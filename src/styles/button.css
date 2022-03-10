@@ -83,9 +83,10 @@
 }
 
 .completed-btn {
-  position: relative;
-  width: 90%;
+  position: absolute;
   left: 2rem;
+  bottom: 2rem;
+  width: 90%;
   text-align: center;
   border-radius: 20px;
   background: #ffffff;
@@ -137,4 +138,23 @@ div[data-color="Medium"] > button {
 div[data-color="High"] > button {
   background: radial-gradient(167.32% 50% at 50% 50%, #ffddef 0%, #ffbcdf 100%);
   box-shadow: 2px 2px 4px rgba(197, 110, 154, 0.25);
+}
+
+@media only screen and (max-width: 730px) {
+  .cancel-edit-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
+
+  .cancel-edit-btn > img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .completed-btn {
+    width: 90%;
+    font-size: 16px;
+    left: 1rem;
+  }
 }

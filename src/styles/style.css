@@ -37,7 +37,7 @@
   width: 100vw;
   font-family: "Baloo 2";
   text-align: center;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   background: radial-gradient(
     84.3% 94.79% at 50% 50%,
@@ -89,17 +89,8 @@
   justify-content: space-between;
   align-items: center;
   cursor: default;
-}
-
-.project-item > .delete-sign {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.project-item {
   width: 95%;
-  margin: 1rem;
+  margin: 1rem 0.5rem;
   padding: 1rem;
   border-radius: 20px;
   background: radial-gradient(
@@ -109,6 +100,21 @@
   );
   box-shadow: 6px 6px 4px #b9d8dc;
   cursor: pointer;
+}
+
+.project-item > .delete-sign {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.task-counter {
+  font-family: "Open Sans";
+  font-weight: 300;
+  font-size: 14px;
+  display: flex;
+  gap: 0.5rem;
+  margin-right: 4rem;
 }
 
 .pop-up {
@@ -135,39 +141,59 @@
   cursor: default;
 }
 
-.popUp-container > input {
-  width: 75%;
-  font-family: "Open Sans";
-  border: none;
-  box-shadow: 2px 2px 4px #aaa;
-  border-radius: 5px;
-  padding: 0 0.5rem;
-}
-
-.popUp-container > p {
-  color: #ff0000;
-}
-
-.popUp-container > p::before {
-  content: "⚠ ";
-}
-
-.popUp-container > .popUp-buttons {
-  display: flex;
-  justify-content: space-between;
-  width: 75%;
-}
-
-.popUp-container button {
-  width: 35%;
-  border-radius: 20px;
-  font-family: "Baloo 2";
-  border: none;
-  cursor: pointer;
-}
-
 @media only screen and (max-width: 730px) {
   .header {
     font-size: 28px;
+  }
+
+  .project-list > .project-item {
+    position: relative;
+    display: flex;
+    width: 60vw;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project-item > .delete-sign {
+    position: absolute;
+    right: 10px;
+  }
+
+  .task-counter {
+    font-size: 12px;
+    display: flex;
+    gap: 0.5rem;
+    margin-right: 0;
+  }
+
+  .form-items {
+    gap: 0.5rem;
+    font-size: 16px;
+  }
+
+  .form-items .todo-input {
+    font-size: 16px;
+    width: 90%;
+  }
+
+  .item-description {
+    gap: 0.5rem;
+    font-size: 16px;
+  }
+
+  .item-description textarea {
+    font-size: 14px;
+  }
+
+  .pop-up > form {
+    width: 50vw;
+  }
+
+  .footer {
+    box-shadow: none;
+  }
+
+  .footer > small {
+    font-size: 12px;
   }
 }
