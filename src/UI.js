@@ -24,15 +24,19 @@ const UI = (() => {
   deleteTaskBtn.querySelector("img").src = trashSVG;
   taskEditor.querySelector("#cancelEdit-btn > img").src = blueXSVG;
 
-  function setTaskEditorPage() {
+  function setTaskEditorPage(mode) {
     // Hide homepage
     addTaskBtn.classList.toggle("dp-none");
     filterContainer.classList.toggle("dp-none");
     listContainer.classList.toggle("dp-none");
     projectListBtn.classList.toggle("dp-none");
-    // Shoe task editor page
+    // Show task editor page
+    if (mode === "add") {
+      deleteTaskBtn.classList.add("dp-none");
+    } else {
+      deleteTaskBtn.classList.toggle("dp-none");
+    }
     updateTaskBtn.classList.toggle("dp-none");
-    deleteTaskBtn.classList.toggle("dp-none");
     taskEditor.classList.toggle("dp-none");
     return 0;
   }

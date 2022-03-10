@@ -159,7 +159,7 @@ const TaskManager = (() => {
 
   // for preparing a blank task form only
   addTaskBtn.addEventListener("click", () => {
-    UI.setTaskEditorPage();
+    UI.setTaskEditorPage("add");
     setProjectList();
     const {
       priorityEl,

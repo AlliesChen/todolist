@@ -1,6 +1,20 @@
 const Storage = (() => {
   // Using in creating tasks at first time entering the app
   const initTask = {
+    priority: "High",
+    dueDate: new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
+    project: "myProject",
+    title: "Hello World 😁",
+    description:
+      "Click me to edit my content. Or, click the button on the bottom right corner",
+    completed: false,
+  };
+
+  const initTask2 = {
     priority: "Medium",
     dueDate: new Date().toLocaleDateString("en-US", {
       year: "numeric",
@@ -8,9 +22,22 @@ const Storage = (() => {
       day: "numeric",
     }),
     project: "myProject",
-    title: "What you gonna make today",
+    title: "Showing the appearance of completed tasks",
     description:
-      "Write it down, and maybe have some description to it. Also, you can add short notes, or checkbox to make things clearer 😁",
+      "Using filters just below the page title for displaying only uncomplete tasks or searching for the tasks under some project",
+    completed: true,
+  };
+
+  const initTask3 = {
+    priority: "Low",
+    dueDate: new Date().toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    }),
+    project: "myProject",
+    title: "Creating projects!",
+    description: "Try the button on the bottom left ↙",
     completed: false,
   };
 
@@ -18,6 +45,8 @@ const Storage = (() => {
   const todolist = {
     tasks: {
       init: initTask,
+      init2: initTask2,
+      init3: initTask3,
     },
     projects: {
       myProject: 0,
