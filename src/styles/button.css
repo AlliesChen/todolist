@@ -83,10 +83,9 @@
 }
 
 .completed-btn {
-  position: absolute;
-  left: 2rem;
-  bottom: 2rem;
-  width: 90%;
+  align-self: center;
+  bottom: 30vh;
+  width: 60%;
   text-align: center;
   border-radius: 20px;
   background: #ffffff;
@@ -147,14 +146,26 @@ div[data-color="High"] > button {
     top: 0.5rem;
   }
 
+  .completed-btn {
+    font-size: 16px;
+    margin-top: auto;
+  }
+
+  .bottom-btn {
+    width: 3.5rem;
+    height: 3.5rem;
+    bottom: 8vh;
+    opacity: 85%;
+  }
+
+  .cancel-edit-btn > img,
+  .update-task-btn > img,
+  .del-task-btn > img,
+  .add-task-btn > img,
+  .project-list-btn > img,
+  .add-project-btn > img,
   .cancel-edit-btn > img {
     width: 2rem;
     height: 2rem;
-  }
-
-  .completed-btn {
-    width: 90%;
-    font-size: 16px;
-    left: 1rem;
   }
 }
